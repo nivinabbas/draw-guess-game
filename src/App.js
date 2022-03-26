@@ -18,7 +18,7 @@ function App({ history }) {
   };
 
   const paramRoomId = qs.parse(window.location.search, {
-    ignoreQueryPrefix: true
+    ignoreQueryPrefix: true,
   }).roomId;
 
   if (!localStorage.getItem('roomId')) {
@@ -32,7 +32,7 @@ function App({ history }) {
   const [socket, setSocket] = useState(undefined);
 
   useEffect(() => {
-    const socket = io('http://127.0.0.1:5000/');
+    const socket = io();
     setSocket(socket);
 
     return () => socket.disconnect();
@@ -47,7 +47,7 @@ function App({ history }) {
         position: 'absolute',
         top: '50%',
         left: '50%',
-        transform: 'translate(-50%, -50%)'
+        transform: 'translate(-50%, -50%)',
       }}
     >
       <Switch>
