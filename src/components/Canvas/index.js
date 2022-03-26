@@ -17,7 +17,7 @@ const Canvas = ({ socket, location, history }) => {
   const chatBoxRef = useRef();
   const roomId = localStorage.getItem('roomId');
   const paramRoomId = qs.parse(location.search, {
-    ignoreQueryPrefix: true
+    ignoreQueryPrefix: true,
   }).roomId;
 
   useEffect(() => {
@@ -36,8 +36,13 @@ const Canvas = ({ socket, location, history }) => {
         }
       });
       socket.on('chatting', (data) => {
-        const { messages = [] } = data;
-        if (messages.length) setMessages(messages);
+        const { messages = [], roomId: serverRoomId } = data;
+
+        if (
+          messages.length &&
+          (serverRoomId === paramRoomId || roomId === serverRoomId)
+        )
+          setMessages(messages);
       });
 
       socket.on('success', (data) => {
@@ -67,7 +72,7 @@ const Canvas = ({ socket, location, history }) => {
     socket.emit('draw', {
       drawings: paths,
       roomId: paramRoomId || roomId,
-      option
+      option,
     });
   };
   const debounceDrawSend = useCallback(
@@ -88,7 +93,7 @@ const Canvas = ({ socket, location, history }) => {
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 80,
-        width: '100%'
+        width: '100%',
       }}
     >
       {success && (
@@ -108,7 +113,7 @@ const Canvas = ({ socket, location, history }) => {
             justifyContent: 'space-between',
             alignItems: 'center',
             width: '100%',
-            marginBottom: 16
+            marginBottom: 16,
           }}
         >
           <button
@@ -143,7 +148,7 @@ const Canvas = ({ socket, location, history }) => {
           width: '90%',
           border: 'solid 1px #c8c8c8',
           padding: 8,
-          boxShadow: '0 0 0 0 #fff inset, #6225e6 0 0 0 3px'
+          boxShadow: '0 0 0 0 #fff inset, #6225e6 0 0 0 3px',
         }}
       >
         <ReactSketchCanvas
@@ -163,7 +168,7 @@ const Canvas = ({ socket, location, history }) => {
             border: 'solid 1px #c8c8c8',
             boxShadow: '0 0 0 0 #fff inset, #6225e6 0 0 0 3px',
             height: 100,
-            overflow: 'auto'
+            overflow: 'auto',
           }}
         >
           {messages.map(({ msg, sender }, index) => {
@@ -173,7 +178,7 @@ const Canvas = ({ socket, location, history }) => {
                 key={`chat-${index}`}
                 style={{
                   width: '100%',
-                  float
+                  float,
                 }}
               >
                 <div
@@ -186,7 +191,7 @@ const Canvas = ({ socket, location, history }) => {
                     }`,
                     color: '#fafafa',
                     margin: 8,
-                    padding: 4
+                    padding: 4,
                   }}
                 >
                   {msg}
@@ -210,7 +215,7 @@ const Canvas = ({ socket, location, history }) => {
             alignItems: 'center',
             justifyContent: 'space-between',
             marginTop: 8,
-            maxWidth: 344
+            maxWidth: 344,
           }}
         >
           <button
@@ -219,7 +224,7 @@ const Canvas = ({ socket, location, history }) => {
             onClick={() => {
               socket.emit('message-chat', {
                 msg: word,
-                roomId: paramRoomId ? paramRoomId : roomId
+                roomId: paramRoomId ? paramRoomId : roomId,
               });
               setWord('');
               chatBoxRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -234,7 +239,7 @@ const Canvas = ({ socket, location, history }) => {
               onClick={() => {
                 socket.emit('guess-word', {
                   word,
-                  roomId: paramRoomId ? paramRoomId : roomId
+                  roomId: paramRoomId ? paramRoomId : roomId,
                 });
                 setWord('');
                 chatBoxRef.current.scrollIntoView({ behavior: 'smooth' });
