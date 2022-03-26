@@ -3,7 +3,7 @@ import Waiting from '../Animations/Waiting';
 import CopyToClipboard from 'react-copy-to-clipboard';
 const WaitingScreen = ({ history, socket }) => {
   const roomId = localStorage.getItem('roomId');
-  const roomLink = `http://localhost:3000/draw?roomId=${roomId}`;
+  const roomLink = `http://draw-guessing-app.herokuapp.com/draw?roomId=${roomId}`;
 
   const [copied, setCopied] = useState(false);
 
@@ -23,7 +23,7 @@ const WaitingScreen = ({ history, socket }) => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh'
+        height: '100vh',
       }}
     >
       <Waiting />
