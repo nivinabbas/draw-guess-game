@@ -1,0 +1,49 @@
+.btn {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20%;
+  background-color: #6c6cff;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 30px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-weight: 400;
+  text-align: center;
+  cursor: pointer;
+  transition: all 5ms linear;
+}
+
+/* body {
+  margin: 0;
+} */
+
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-image: linear-gradient(to top, #5f72bd 0%, #9b23ea 100%);
+}
+
+.st0 {
+  stroke: #ffffff;
+  stroke-width: 12;
+  fill: none;
+  stroke-dasharray: 800;
+  stroke-dashoffset: 0;
+  animation: dash 3s linear 3 alternate;
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: 800;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
