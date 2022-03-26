@@ -1,0 +1,106 @@
+.word-input {
+  border: 0;
+  background: rgba(0, 0, 0, 0);
+  appearance: none;
+  width: 100%;
+  position: relative;
+  line-height: 1.4;
+  color: rgb(0, 0, 0);
+  font-size: 16px;
+  font-weight: 400;
+  height: 40px;
+  transition: all 0.2s ease;
+  border: 3px solid #6225e6;
+  outline: 0;
+  padding: 2;
+}
+
+.send-btn {
+  width: 100px;
+  border: solid 3px #6225e6;
+  border-top: solid 2px #6225e6;
+  border-radius: 0;
+
+  height: 60px;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  font-weight: '700';
+  text-transform: uppercase;
+  color: #6225e6;
+  background-color: #fafafa;
+  cursor: pointer;
+}
+
+.send-btn:hover {
+  color: #fafafa;
+  background-color: #6225e6;
+}
+
+.send-btn:focus {
+  color: #fafafa;
+  background-color: #6225e6;
+}
+
+.celebrate {
+  width: 300px;
+  height: 300px;
+  /* background-color: red; */
+  /* Center vertically and horizontally */
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -0%);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#celebrate {
+  /* margin-top: 25px; */
+  /* font-size: 21px; */
+  text-align: center;
+
+  -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 2s; /* Firefox < 16 */
+  -ms-animation: fadein 2s; /* Internet Explorer */
+  -o-animation: fadein 2s; /* Opera < 12.1 */
+  animation: fadein 2s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
