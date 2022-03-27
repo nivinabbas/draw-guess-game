@@ -5,11 +5,13 @@ const SwitchPlayer = ({ score }) => {
     <div
       style={{
         position: 'absolute',
-        width: '100vw',
         top: 0,
         bottom: -100,
+        left: -10,
+        right: -10,
+        bottom: -10,
         zIndex: 10,
-        backdropFilter: `blur(8px)`
+        backdropFilter: `blur(8px)`,
       }}
     >
       <div className="celebrate" id="celebrate">

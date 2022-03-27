@@ -1,5 +1,5 @@
 import { useLottie } from 'lottie-react';
-import drawingAnimation from '../../assets/lotties/welcome.json';
+import drawingAnimation from '../../assets/lotties/draw.json';
 
 const Welcome = () => {
   const options = {

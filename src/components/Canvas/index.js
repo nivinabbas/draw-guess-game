@@ -9,12 +9,13 @@ import SwitchPlayer from './SwitchPlayer';
 const Canvas = ({ socket, location, history }) => {
   const [disabled, setDisabled] = useState(false);
   const [word, setWord] = useState('');
+  const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [success, setSuccess] = useState(false);
   const [score, setScore] = useState(0);
   const [switchPlayer, setSwitchPlayer] = useState(false);
-  const ref = useRef();
-  const chatBoxRef = useRef();
+  const ref = useRef(null);
+  const chatBoxRef = useRef(null);
   const roomId = localStorage.getItem('roomId');
   const paramRoomId = qs.parse(location.search, {
     ignoreQueryPrefix: true,
@@ -37,12 +38,14 @@ const Canvas = ({ socket, location, history }) => {
       });
       socket.on('chatting', (data) => {
         const { messages = [], roomId: serverRoomId } = data;
-
         if (
           messages.length &&
           (serverRoomId === paramRoomId || roomId === serverRoomId)
-        )
+        ) {
           setMessages(messages);
+          if (chatBoxRef && chatBoxRef.current)
+            chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+        }
       });
 
       socket.on('success', (data) => {
@@ -90,10 +93,9 @@ const Canvas = ({ socket, location, history }) => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 80,
-        width: '100%',
+        marginTop: 60,
+        paddingBottom: 16,
       }}
     >
       {success && (
@@ -118,7 +120,6 @@ const Canvas = ({ socket, location, history }) => {
         >
           <button
             className="custom-btn-2"
-            style={{ marginLeft: 8 }}
             onClick={() => {
               if (ref && ref.current) {
                 ref.current.clearCanvas();
@@ -130,7 +131,6 @@ const Canvas = ({ socket, location, history }) => {
           </button>
           <button
             className="custom-btn-2"
-            style={{ marginRight: 8 }}
             onClick={async () => {
               if (ref) {
                 await ref.current.undo();
@@ -145,28 +145,74 @@ const Canvas = ({ socket, location, history }) => {
       )}
       <div
         style={{
-          width: '90%',
-          border: 'solid 1px #c8c8c8',
-          padding: 8,
-          boxShadow: '0 0 0 0 #fff inset, #6225e6 0 0 0 3px',
+          width: '100%',
+          border: 'solid 3px #6225e6',
         }}
       >
         <ReactSketchCanvas
           ref={ref}
           onChange={() => debounceDrawSend('draw')}
-          style={{ width: '100%', height: '350px' }}
+          style={{ width: '100%', height: '300px' }}
           strokeWidth={10}
           strokeColor="#fbc638"
           allowOnlyPointerType={`${disabled ? 'pen' : 'all'}`}
         />
       </div>
-      <div style={{ marginTop: 24, width: '90%', marginLeft: -18 }}>
+      {disabled && (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginTop: -3,
+            width: '100%',
+          }}
+        >
+          <input
+            type="text"
+            style={{
+              border: 'solid 3px #6225e6',
+              height: 48,
+              fontSize: 16,
+              outline: 'none',
+              padding: 8,
+              marginLeft: -3,
+              borderRight: 0,
+              borderRadius: 0,
+            }}
+            value={word}
+            onChange={(e) => setWord(e.target.value)}
+            placeholder={`Guess?`}
+            maxLength="11"
+          />
+          <button
+            className="custom-btn-2"
+            style={{ marginLeft: -1, marginRight: -3 }}
+            onClick={() => {
+              socket.emit('guess-word', {
+                word,
+                roomId: paramRoomId ? paramRoomId : roomId,
+              });
+              setWord('');
+            }}
+          >
+            Guess
+          </button>
+        </div>
+      )}
+      <div
+        style={{
+          marginTop: 16,
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
         <div
           ref={chatBoxRef}
           style={{
             width: '100%',
-            border: 'solid 1px #c8c8c8',
-            boxShadow: '0 0 0 0 #fff inset, #6225e6 0 0 0 3px',
+            border: 'solid 3px #6225e6',
             height: 100,
             overflow: 'auto',
           }}
@@ -200,54 +246,45 @@ const Canvas = ({ socket, location, history }) => {
             );
           })}
         </div>
-        <input
-          className="word-input"
-          value={word}
-          onChange={(e) => setWord(e.target.value)}
-          placeholder="Guess?"
-          maxLength="11"
-          style={{ marginLeft: -3, maxWidth: 329 }}
-        />
         <div
           style={{
-            width: '100%',
             display: 'flex',
-            alignItems: 'center',
             justifyContent: 'space-between',
-            marginTop: 8,
-            maxWidth: 344,
+            marginTop: -3,
+            width: '100%',
           }}
         >
+          <input
+            type="text"
+            style={{
+              border: 'solid 3px #6225e6',
+              height: 48,
+              fontSize: 16,
+              outline: 'none',
+              padding: 8,
+              marginLeft: -3,
+              borderRight: 0,
+              borderRadius: 0,
+            }}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder={`Send`}
+            maxLength="11"
+          />
           <button
             className="custom-btn-2"
-            style={{ marginLeft: -3 }}
+            style={{ marginLeft: -1, marginRight: -3 }}
             onClick={() => {
+              if (message === '') return;
               socket.emit('message-chat', {
-                msg: word,
+                msg: message,
                 roomId: paramRoomId ? paramRoomId : roomId,
               });
-              setWord('');
-              chatBoxRef.current.scrollIntoView({ behavior: 'smooth' });
+              setMessage('');
             }}
           >
-            Chat
+            Send
           </button>
-          {disabled && (
-            <button
-              className="custom-btn-2"
-              style={{ marginRight: 8 }}
-              onClick={() => {
-                socket.emit('guess-word', {
-                  word,
-                  roomId: paramRoomId ? paramRoomId : roomId,
-                });
-                setWord('');
-                chatBoxRef.current.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              Guess
-            </button>
-          )}
         </div>
       </div>
     </div>

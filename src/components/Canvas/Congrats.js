@@ -5,12 +5,13 @@ const Congrats = ({ socket, history, roomId, score }) => {
     <div
       style={{
         position: 'absolute',
-        width: '100vw',
         top: 0,
         bottom: -100,
-        // height: '100vh',
+        left: -10,
+        right: -10,
+        bottom: -10,
         zIndex: 10,
-        backdropFilter: `blur(8px)`
+        backdropFilter: `blur(8px)`,
       }}
     >
       <div className="celebrate" id="celebrate">
@@ -26,7 +27,7 @@ const Congrats = ({ socket, history, roomId, score }) => {
           onClick={() => {
             socket.emit('set-active-player', {
               roomId,
-              activePlayer: socket.id
+              activePlayer: socket.id,
             });
             history.push('/word');
           }}

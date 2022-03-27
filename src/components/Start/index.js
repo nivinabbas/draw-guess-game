@@ -21,15 +21,15 @@ const Start = ({ history, socket }) => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100%'
+        height: '100%',
       }}
     >
       <h1 style={{ color: '#6225e6' }}>
         {!bestScore && bestScore !== 0
           ? 'Loading best Score....'
-          : `Score : ${bestScore}`}
+          : `Best Score : ${bestScore}`}
       </h1>
-      <div style={{ width: '80%', marginTop: -50 }}>
+      <div style={{ marginBottom: 32 }}>
         <Welcome />
       </div>
       <Button
